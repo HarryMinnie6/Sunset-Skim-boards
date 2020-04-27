@@ -1,10 +1,18 @@
 console.log("kgdfgf");
+const hamburgerButton = document.querySelector('.hamburger-button')
+const navbarLinks = document.querySelector('.nav-links')
+//what happens when you click on the hamburger menu (mobile view)
+hamburgerButton.addEventListener('click' , function (e) {
+    navbarLinks.classList.toggle('active')
+})
+
+
 
 let slides = document.querySelectorAll('.slide')
 let nextBtn = document.querySelector('.next-btn')
 let prevBtn = document.querySelector('.previous-btn')
-let autoScroll = false
-let intervalTime = 2000;
+let autoScroll = true
+let intervalTime = 5000;
 let slideInterval;
 
 let nextSlide = function(){

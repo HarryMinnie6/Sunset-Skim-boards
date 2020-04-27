@@ -107,39 +107,12 @@ html, body {
     }
 }
 
-.home{
-    background-image: linear-gradient(rgba(255, 255, 255, 0.3),rgb(255, 255, 255, 0.5)),url(background-images/background1.jpg);
-    min-height: 100%; 
-    position: relative;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-.home-description{
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    text-align: center;
-    color: black;
-    font-size: 2rem;
-    letter-spacing: 10px;
-    font-family: 'Bebas Neue', cursive;
-    line-height: 1.8rem;
-}
-.logo{
-    width: 15rem;
-    height: 15rem;
-    position: absolute;
-    left: 30%;
-    top: 7rem;
-}
 .about{
     background-color: whitesmoke;
     color: rgb(63, 63, 63);
     text-align: center;
     padding: 20px 80px;
+    padding-top: 5rem;
 }
 .h2-about{
     font-size: 2rem;
@@ -151,6 +124,130 @@ html, body {
     line-height: 1.8;
 
 }
+.gallery{
+    background:white;
+    min-height: 500px;
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Roboto', cursive;
+    display: flex; 
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center; 
+    position: relative;
+    overflow: hidden;
+    font-family: 'Roboto', cursive;  
+}
+.about,.contact{
+    background:linear-gradient(rgba(255, 255, 255, 0.7),rgba(255, 255, 255, 0.7)),url(background-images/background8.jpg);
+    min-height: 500px;
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Roboto', cursive;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    position: relative;
+    overflow: hidden;
+    font-family: 'Roboto', cursive; 
+    padding: 20px 80px; 
+}
+.h2-gallery{
+    font-size: 2rem;
+    padding-top: 2rem;
+    letter-spacing: 10px;
+    font-family: 'Bebas Neue', cursive;
+}
+.more-images{
+    margin-bottom: 1rem;
+}
+.image-wrapper{
+    /* background-color: red; */
+    display: grid;
+    grid-template-areas: "one two two"
+                         "five four three"
+                         "six six three"
+                         "nine seven ten"
+                         "nine eight ten";
+    gap: 5px;
+    padding: 5px;
+    margin: 20px;
+}
+img{
+    width: 100%;
+    height: 100%;
+}
+
+.one{
+    grid-area: one;
+    background-color: rgb(38, 165, 187);
+    width: 300px;
+    height: 300px;
+    
+}
+.two{
+    grid-area: two;
+    background-color: rgb(25, 41, 44);
+    width: 605px;
+    height: 300px;
+    
+}
+.three{
+    grid-area: three;
+    background-color: rgb(85, 154, 167);
+    width: 300px;
+    height: 605px;
+}
+.four{
+    grid-area: four;
+    background-color: rgb(12, 80, 92);
+    width: 300px;
+    height: 300px;
+}
+.five{
+    grid-area: five;
+    background-color: rgb(111, 216, 235);
+    width: 300px;
+    height: 300px;
+}
+.six{
+    grid-area: six;
+    background-color: rgb(8, 198, 231);
+    width: 605px;
+    height: 300px;
+}
+.seven{
+    grid-area: seven;
+    background-color: rgb(63, 89, 94);
+    width: 300px;
+    height: 300px;
+}
+.eight{
+    grid-area: eight;
+    background-color: rgb(6, 81, 94);
+    width: 300px;
+    height: 300px;
+}
+.nine{
+    grid-area: nine;
+    background-color: rgb(157, 234, 248);
+    width: 300px;
+    height: 605px;
+}
+.ten{
+    grid-area: ten;
+    background-color: rgb(48, 137, 153);
+    width: 300px;
+    height: 605px;
+}
+
 .contact {
     background-color: rgb(247, 247, 247);
     color: rgb(63, 63, 63);
@@ -160,6 +257,7 @@ html, body {
 .h2-contact{
     font-size: 2rem;
     letter-spacing: 10px;
+    font-family: 'Bebas Neue', cursive;
 }
 .contact-info-wrapper{
     display: flex;
@@ -181,190 +279,28 @@ html, body {
 }
 .fa-phone, .fa-envelope, .fa-map-marker-alt{
     color: black;
+    outline: none;
+    text-decoration: none;
 }
+a{
+    outline: none;
+    text-decoration: none;
+}
+@media (max-width: 930px) {
+    .image-wrapper{
+        display: grid;
+        grid-template-areas: "one five"
+                             "two two"
+                             "four three"
+                             "nine three"
+                             "nine seven"
+                             "six six"
+                             "ten eight";
+        gap: 5px;
+        padding: 5px;
+        margin: 20px;
+    }
 
-
-.boards-display{
-    background:linear-gradient(rgba(0, 0, 0, 0.3),rgb(0, 0, 0,0.5)),url(background-images/background5.jpg);
-    min-height: 400px;
-    position: relative;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    font-family: 'Roboto', cursive;
-    display: flex; 
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; 
-    position: relative;
-    overflow: hidden;
-    font-family: 'Roboto', cursive;
-}
-.h2-boards{
-    font-size: 2rem;
-    letter-spacing: 10px;
-    font-family: 'Bebas Neue', cursive;
-}
-.slides-holder{
-    margin: 20px;
-    position: relative;
-    overflow: hidden;
-    height: 600px;
-    width: 600px;
-    /* background-color: whitesmoke; */
-}
-.slide{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity:0;
-    transition: opacity 0.5s ease-in-out;   
-}
-.slide.current{
-    opacity: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.slide .content{
-    position: absolute;
-    bottom:-210px;
-    left:-500px;
-    width: 100%;
-    height: auto;
-    background-color: rgb(245, 245, 245,0.7);
-    /* border-radius: 5px; */
-    font-size: 1rem;
-    padding: 5px;
-    opacity: 0;
-    color: black;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    line-height:1.5rem;  
-}
-.h1-content{
-    font-size: 1.5rem;
-    line-height:0.3;
-    opacity: 1;
-    text-align: center;
-}
-.p-content{
-    padding-left: 30px;
-}
-.slide.current .content{
-    opacity: 1;
-    transform: translateX(500px);
-    transition: all 0.7s ease-in-out 0.3s;
-}
-.more-btn{
-    position: absolute;
-    right: 40px;
-    bottom: 20px;
-    padding: 10px;
-    border: 1px solid black;
-    outline: none;
-    background-color: whitesmoke;
-    transition: all 0.2s ease;
-    font-size: 1rem;
-}
-.more-btn:hover{
-    transform: translateX(5px);
-    cursor: pointer;
-}
-.previous-btn:hover, .next-btn:hover{
-    cursor: pointer;
-    transform: scale(1.1);
-    background-color: black;
-    border:2px solid whitesmoke;
-    color: whitesmoke;
-}
-.next-btn{
-    position: absolute;
-    right: 15px;
-    top: 40%;
-    border-radius: 50%;
-    padding: 10px;
-    background-color: transparent;
-    border-radius: 50%;
-    border: 2px solid black;
-    outline: none;
-    background-color: whitesmoke;
-    opacity: 0.7;
-    transition: all 0.2s ease;
-}
-.previous-btn{
-    position: absolute;
-    left: 15px;
-    right: 15px;
-    top: 40%;
-    padding: 10px;
-    background-color: transparent;
-    border-radius: 50%;
-    border: 2px solid black;
-    outline: none;
-    background-color: whitesmoke;
-    opacity: 0.7;
-    transition: all 0.2s ease;
-}
-.slide:first-child {
-    background: url(single-boards/board1.png);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 65%;
-}
-.slide:nth-child(2) {
-    background: url(single-boards/board2.png) ;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 65%;
-}
-.slide:nth-child(3) {
-    background: url(single-boards/board3.png) ;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 65%;
-}
-.slide:nth-child(4) {
-    background: url(single-boards/board4.png);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 65%;
-}
-.slide:nth-child(5) {
-    background: url(single-boards/board5.png);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 65%;
-}
-.slide:nth-child(6) {
-    background: url(single-boards/board6.png);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 65%;
-}
-.slide:nth-child(7) {
-    background: url(single-boards/board8.png);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 65%;
 }
 
 @media (max-width: 630px) {
@@ -417,7 +353,6 @@ html, body {
         font-size: 1.2rem;
         line-height: 1.8rem;
         align-self: flex-start;
-    
     }
     .contact-info-wrapper{
         display: flex;
@@ -427,21 +362,57 @@ html, body {
         /* align-items: center; */
         font-family: 'Roboto', cursive;
     }
+    .h2-boards{
+        padding-top: 0rem;
+    }
+    .image-wrapper{
+        display: grid;
+        grid-template-areas: "one"
+                             "two"
+                             "three"
+                             "four"
+                             "five"
+                             "six"
+                             "seven"
+                             "eight"
+                             "nine"
+                             "ten";
+        gap: 5px;
+        padding: 5px;
+        margin: 20px;
+    }
+    .two{
+        grid-area: two;
+        background-color: rgb(25, 41, 44);
+        width: 300px;
+        height: 300px;
+        
+    }
+    .six{
+        grid-area: six;
+        background-color: rgb(8, 198, 231);
+        width: 300px;
+        height: 300px;
+    }
+    .img{
+        width: 300px;
+        height: 300px;
+    }
     
     
 }
-@media(max-width:420px) {
+@media(max-width:430px) {
     .logo{
         align-self: center;
         width: 12rem;
         height: 12rem;
         /* position: absolute; */
-        left: 23%;
+        left: 25%;
         top: 5rem;
     }
     .home-description{
         position: absolute;
-        top: 46%;
+        top: 18rem;
         width: 100%;
         text-align: center;
         color: black;
@@ -485,6 +456,7 @@ html, body {
         /* align-items: center; */
         font-family: 'Roboto', cursive;
     }
+  
     
    
 }
@@ -499,7 +471,7 @@ html, body {
     }
     .home-description{
         position: absolute;
-        top: 50%;
+        top: 18rem;
         width: 100%;
         text-align: center;
         color: black;
