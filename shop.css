@@ -1,0 +1,397 @@
+@import url('https://fonts.googleapis.com/css?family=Audiowide|Bebas+Neue|Lalezar|Roboto|Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Saira+Stencil+One&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    /* color: rgb(226, 7, 7); */
+    box-sizing: border-box;
+    font-family: 'Bebas Neue', cursive;
+    line-height: 1.6rem;
+    scroll-behavior: smooth;
+}
+/* -----------------NAV BAR-------START------------------------ */
+.navigation-bar {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: flex;
+    background-color: rgba(247, 247, 247, 0.9); 
+    z-index: 1;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+.nav-links ul {
+    margin: 0;
+    padding: 0;
+    display: flex;  
+}
+.nav-links li {
+    list-style: none;  
+}
+.nav-links li a{
+    text-decoration: none;
+    color: black;
+    padding: 1rem;
+    display: block; 
+    font-size: 1.5rem;     
+}
+.nav-links a:hover {
+    color: rgb(38, 165, 187);
+}
+  /* hamburger-menu start*/
+.hamburger-button {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 35px;
+    height: 25px;      
+}
+.hamburger-button .bar {
+    height: 4px;
+    width: 100%;
+    background-color: rgb(230, 230, 230);;
+    border-radius: 4px;
+    background: black;
+}
+@media (max-width: 765px) {
+   
+    .navigation-bar {    
+        padding-right: 20px;
+    }
+    .nav-links li a{
+        padding: 0.7rem ;
+        font-size: 1.4rem;           
+    }
+    .hamburger-button {
+        width: 40px;
+        height: 28px;     
+    }
+}
+@media (max-width: 630px) {
+    .hamburger-button { 
+        display: flex;    
+        width: 38px;
+        height: 28px;      
+        top: 1.2rem;
+        right: 1.5rem;     
+    }
+    .nav-links  {     
+        display: none;
+        width: 100%;
+    }
+    .navigation-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .nav-links ul {
+        flex-direction: column;
+        width: 100%;
+    }
+    .nav-links li {
+        text-align: center;
+    }
+    .nav-links li a {
+        padding: .5rem .5rem;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+}
+/* -----------------NAV BAR-------END------------------------ */
+
+/* -----------------SITE-------START------------------------ */
+
+.shop-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.searchbar-holder{
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.not-found{
+    display: none;
+}
+.wetsuit-holder,
+.boards-holder-favourite,
+.boards-holder-other,
+.bags-holder,
+.accessories-holder,
+.aparrel-holder,
+.search-display-holder{
+    padding: 20px;
+    display: grid;
+    justify-content: center;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 350px));
+    grid-auto-rows: minmax(300px, auto);
+    padding: 20px;   
+}
+.boards-wrapper{
+    background-color: whitesmoke;
+    padding: 10px;
+}
+/* ---------------------Shop-item-display----start----------- */
+.item{
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: auto;
+    transition: all 0.3s ease;
+    padding: 10px;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    /* justify-content: center; */
+}
+.item:hover{
+    cursor: pointer;
+    box-shadow: 0 0 15px grey;
+    transform: scale(1.02);
+}
+.item-name{
+    margin: 1rem;
+    font-size: 1.3rem;
+    font-family: 'Bebas Neue', cursive;
+    position: relative;
+}
+img{
+    height: 100%;
+    width: 100%;
+}
+.img-holder{
+    position: relative;
+    width: 35%;
+    height:300px;
+    /* background-color: red */
+}
+.other-shapes{
+    position: relative;
+    width: 300px;
+    height:300px;
+
+}
+.img-accessories{
+    position: relative;
+    width: 210px;
+    height:220px;
+
+}
+.item-description{
+    margin: 0.5rem;
+    font-size: 1.1rem;
+    position: relative;
+}
+.item-price{
+    margin: 0.5rem;
+    font-size: 1.05rem;
+}
+.add-to-cart{
+    font-size: 1rem;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+    
+}
+.add-to-cart:hover{
+    cursor: pointer;
+    background-color: rgb(44, 44, 44);
+    color: whitesmoke;
+}
+
+
+/* ---------------------Shop-item-display----end----------- */
+.search-result-holder{
+    background-color: darkred;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+.clear-search{
+    display: flex;
+}
+
+.wetsuit-wrapper{
+    padding: 10px;
+    background-color: whitesmoke;
+}
+.bags-wrapper{
+    padding: 10px;
+    background-color: rgb(241, 241, 241);
+}
+.aparrel-wrapper{
+    padding: 10px;
+    background-color: whitesmoke;
+    position: relative;
+}
+.accessories-wrapper{
+    padding: 10px;
+    background-color: rgb(241, 241, 241);
+    position: relative;
+}
+.h1-header{
+    text-align: center;
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+}
+h1{
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+    width: 20%;
+}
+.h2-favourite{
+    text-align: center;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+h2{
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+
+}
+.h1-watermark{
+    font-family: 'Saira Stencil One', cursive;
+    color: darkred;
+    font-size: 6rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    z-index: 11;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+/* -----------------SITE-------END------------------------ */
+
+
+
+/* -----------------MEDIA QUERIES-------START------------------------ */
+
+@media (max-width: 935px) {
+.store-brands-wrapper{
+    grid-template-areas: "one one two two"
+                        "one one three three"
+                        "five four three three"
+                        "ten ten eight eight"
+                        " ten ten eleven eleven"
+                        " seven seven eleven eleven"
+                        "nine nine twelve six";
+}
+
+
+}
+
+@media (max-width: 630px){
+    
+    .h1-store-brands{
+        font-size: 1.4rem;
+        letter-spacing: 5px;
+        margin: 15px 0px 15px 0px;
+    }
+    .one{
+        grid-area: one;
+        background-color: rgb(38, 165, 187);
+        width: 155px;
+        height: 150px;  
+    }
+    .two{
+        grid-area: two;
+        background-color: rgb(25, 41, 44);
+        width: 155px;
+        height: 75px;
+    }
+    .three{
+        grid-area: three;
+        background-color: rgb(85, 154, 167);
+        width: 155px;
+        height: 150px;
+    }
+    .four{
+        grid-area: four;
+        background-color: rgb(12, 80, 92);
+        width: 75px;
+        height: 75px;
+    }
+    .five{
+        grid-area: five;
+        background-color: rgb(111, 216, 235);
+        width:75px;
+        height:75px;
+    }
+    .six{
+        grid-area: six;
+        background-color: rgb(8, 198, 231);
+        width: 75px;
+        height: 75px;
+    }
+    .seven{
+        grid-area: seven;
+        background-color: rgb(63, 89, 94);
+        width: 155px;
+        height: 75px;
+    }
+    .eight{
+        grid-area: eight;
+        background-color: rgb(6, 81, 94);
+        width: 155px;
+        height: 75px;
+    }
+    .nine{
+        grid-area: nine;
+        background-color: rgb(157, 234, 248);
+        width: 155px;
+        height: 75px;
+    }
+    .ten{
+        grid-area: ten;
+        background-color: rgb(153, 137, 48);
+        width: 155px;
+        height: 150px;
+    }
+    .eleven{
+        grid-area: eleven;
+        background-color: rgb(189, 223, 230);
+        width: 155px;
+        height: 150px;
+    }
+    .twelve{
+        grid-area: twelve;
+        background-color: rgb(189, 223, 230);
+        width: 75px;
+        height: 75px;
+    }
+    .h2-contact{
+        font-size: 1.4rem;
+        letter-spacing: 5px;
+        margin: 15px 0px 15px 0px;
+    }
+    .number-wrapper, .email-wrapper, .location-wrapper, .social-wrapper {
+        display: flex;
+        align-items: center; 
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+    }
+    .p-facebook, .p-instagram, .p-twitter{
+        margin: 0rem 2rem; 
+        font-size: .8rem;
+    }
+    .fas, .far{
+        font-size: .8rem;
+
+    }
+   
+}
