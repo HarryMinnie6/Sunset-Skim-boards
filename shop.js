@@ -1,127 +1,189 @@
-console.log("ggg");
+// ----------------------------------------------------------------------------------
+// functionality for the hamburger mennu
+const hamburgerButton = document.querySelector('.hamburger-button')
+const navbarLinks = document.querySelector('.nav-links')
+//what happens when you click on the hamburger menu (mobile view)
+hamburgerButton.addEventListener('click' , function (e) {
+    navbarLinks.classList.toggle('active')
+})
+// ---------------------------------------------------------------------------------
 
-let addBtn = document.querySelectorAll(".add-to-cart");
 
-//looping over all the buttons
-for( let i = 0; i< addBtn.length; i++) {
-    addBtn[i].addEventListener('click', function(e){ 
-        cartQuantity(inventory[i]) 
-        cartTotal(inventory[i])    
-    })   
+
+let cart = (JSON.parse(localStorage.getItem('cart')) || []);
+const cartDOM = document.querySelector('.cart');
+const addToCartButtonsDOM = document.querySelectorAll('[data-action="ADD_TO_CART"]');
+
+if (cart.length > 0) {
+  cart.forEach(cartItem => {
+    const product = cartItem;
+    insertItemToDOM(product);
+    countCartTotal()
+
+    addToCartButtonsDOM.forEach(addToCartButtonDOM => {
+      const productDOM = addToCartButtonDOM.parentNode;
+
+      if (productDOM.querySelector('.product__name').innerText === product.name) {
+        handleActionButtons(addToCartButtonDOM, product);
+      }
+    });
+
+  });
 }
 
-//getting the number of items in the cart
-function cartQuantity(product){   
-    let productNumber = localStorage.getItem('cartQuantity')
-    productNumber = parseInt(productNumber)
-    if( productNumber) {
-        localStorage.setItem('cartQuantity', productNumber + 1)
-        document.querySelector('.cart-items').innerText =`${productNumber + 1}`
-    } else{
-        localStorage.setItem('cartQuantity', 1)
-        document.querySelector('.cart-items').innerText = `: ${1}`
-    }  
-    setItems(product)
-}
+addToCartButtonsDOM.forEach(addToCartButtonDOM => {
+  addToCartButtonDOM.addEventListener('click', () => {
+    const productDOM = addToCartButtonDOM.parentNode;
+    const product = {
+      image: productDOM.querySelector('.product__image').getAttribute('src'),
+      name: productDOM.querySelector('.product__name').innerText,
+      price: productDOM.querySelector('.product__price').innerText,
+      quantity: 1,
+    };
 
-//adding the items to the cart (what they are)
-function setItems(product){
-    let cartItems = localStorage.getItem('itemsInCart')
-    cartItems = JSON.parse(cartItems)
-    if(cartItems != null) {
+    const isInCart = (cart.filter(cartItem => (cartItem.name === product.name)).length > 0);
 
-        if(cartItems[product.tag] === undefined){
-            cartItems = {
-                ...cartItems,
-                [product.tag]:product
-            }
-        }
-        cartItems[product.tag].inCart += 1
-    } else { 
-        product.inCart = 1
-        cartItems = {
-            [product.tag]: product
-        }
+    if (!isInCart) {
+      insertItemToDOM(product);
+      cart.push(product);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      countCartTotal()
+      handleActionButtons(addToCartButtonDOM, product);
     }
-    localStorage.setItem('itemsInCart',JSON.stringify(cartItems))
-}
+  });
+});
 
-//getting the total cost of everything in the cart
-function cartTotal(product) {
-    let cartCost = localStorage.getItem('cartTotal') 
-    if(cartCost !=null) {
-        cartCost = parseInt(cartCost)
-        localStorage.setItem('cartTotal', cartCost + product.price )
+function insertItemToDOM(product) {
+  cartDOM.insertAdjacentHTML('beforeend', `
+    <div class="cart__item">
+    <div class="image-wrapper ">
+      <img class="cart__item__image" src="${product.image}" alt="${product.name}">
+    </div>
+      <h3 class="cart__item__name">${product.name}</h3>
+      <h3 class="cart__item__price">${product.price}</h3>
+      <div class='value-btns'> 
+      <button class="decrease-btn" data-action="DECREASE_ITEM"><i class="fas fa-caret-left fa-2x"></i></button>
+      <div class="quantity-wrapper">
+      <h3 class="quantity-header">Quantity</h3>
+      <h3 class="cart__item__quantity">${product.quantity}</h3>
+      </div>
+      <button class="increase-btn" data-action="INCREASE_ITEM"><i class="fas fa-caret-right fa-2x"></i></button>
+      </div>
+      <div class="item-total-wrapper">
+      <h3 class="item-total-header">Item Total</h3>
+      <h3 class="cart__item__total">${product.price * product.quantity}.00</h3>
+      </div>
+      
+      <button class="delete-btn" data-action="REMOVE_ITEM"> X </button>
+    </div>`
+    );
 
-    } else{
-        localStorage.setItem('cartTotal', product.price)
-     
-    }
-
-}
-function displayCart(){
-    let cartItems = localStorage.getItem('itemsInCart')
-    cartItems = JSON.parse(cartItems)
-    let cartDescription = document.querySelector(".cart-description")
-    let cartTotal = document.querySelector(".cart-total")
-    let cartCost = localStorage.getItem('cartTotal')
-
-    if(cartItems && cartDescription){
-        cartDescription.innerHTML=""
-        Object.values(cartItems).map(function(item) {
-            cartDescription.innerHTML += 
-            `<div class="cart-item" ">
-            <div class="cart-image-wrapper">
-                <div class="cart-item-image"> ${item.image}</div>
-            </div>
-            <div class="cart-name-wrapper">
-                <h3>Description</h3>
-                <div class="cart-item-name"> ${item.name} - ${item.description}</div>
-            </div>
-            <div class="cart-qty-wrapper">
-                <h3>Quantity</h3>
-                <div class="qty-number-wrapper">
-                    <div class="cart-item-price"><i class="fas fa-caret-left fa-2x" id="arrow-left"></i> ${item.inCart} <i class="fas fa-caret-right fa-2x" id="arrow-right"></i></div>
-            </div>
-                </div>
-            <div class="cart-item-total-wrapper">
-                <h3>Item total</h3>
-                <div class="cart-item-total">R${item.price * item.inCart},00</div>
-            </div>
-                <button class="remove-from-cart-btn"> <i class="fas fa-trash"></i> </button>
-            </div>`
-          
-            
-            
-        });
-
-        cartTotal.innerHTML +=
-        `<div class="total-cost-display">
-        <h3 class="total-header">Cart Total</h3>
-        <div class="total-number"> R${cartCost}.00
+    if (document.querySelector('.cart-footer') === null) {
+      cartDOM.insertAdjacentHTML('afterend', `
+        <div class="cart-footer">
+          <button class="clear-cart-btn" data-action="CLEAR_CART">Clear Cart</button>
+          <div class="cart-total" data-action="CHECKOUT-TOTAL"></div>
+          <button class="payment-btn" data-action="CHECKOUT-BTN">Proceed to payment</button>
         </div>
-        </div>`
-
-
-    }
-    
-}
-// when page is refreshed the number of items in the cart is displayed instead of an empty value
-function onloadCart(){
-    let productNumber = localStorage.getItem('cartNumbers')
-
-    if(productNumber) {
-        document.querySelector('.cart-items').innerText= ` ${productNumber}`
+      `);
+  
+      document.querySelector('[data-action="CLEAR_CART"]').addEventListener('click', () => clearCart());
+      document.querySelector('[data-action="CHECKOUT-BTN"]').addEventListener('click', () => checkout());
     }
 }
-onloadCart()
-displayCart()
 
-let searchBtn = document.querySelector('.search-btn')
+function handleActionButtons(addToCartButtonDOM, product) {
+  addToCartButtonDOM.innerText = 'In Cart';
+  addToCartButtonDOM.disabled = true;
 
-//event listener for the search bar
-let searchBar = document.querySelector('#searchbar')
-searchBar.addEventListener('keyup', filter)
+  const cartItemsDOM = cartDOM.querySelectorAll('.cart__item');
+  cartItemsDOM.forEach(cartItemDOM => {
+    if (cartItemDOM.querySelector('.cart__item__name').innerText === product.name) {
+      cartItemDOM.querySelector('[data-action="INCREASE_ITEM"]').addEventListener('click', () => increaseItem(product, cartItemDOM));
+      cartItemDOM.querySelector('[data-action="DECREASE_ITEM"]').addEventListener('click', () => decreaseItem(product, cartItemDOM, addToCartButtonDOM));
+      cartItemDOM.querySelector('[data-action="REMOVE_ITEM"]').addEventListener('click', () => removeItem(product, cartItemDOM, addToCartButtonDOM));
+    }
+  });
+}
+
+function increaseItem(product, cartItemDOM) {
+  cart.forEach(cartItem => {
+    if (cartItem.name === product.name) {
+      cartItemDOM.querySelector('.cart__item__quantity').innerText = ++cartItem.quantity;
+      cartItemDOM.querySelector('.cart__item__total').innerText = cartItem.quantity * cartItem.price;
+      // cartItemDOM.querySelector('[data-action="DECREASE_ITEM"]').classList.remove('btn--danger');
+      localStorage.setItem('cart', JSON.stringify(cart));
+      countCartTotal()
+    }
+  });
+}
+
+function decreaseItem(product, cartItemDOM, addToCartButtonDOM) {
+  cart.forEach(cartItem => {
+    if (cartItem.name === product.name) {
+      if (cartItem.quantity > 1) {
+        cartItemDOM.querySelector('.cart__item__quantity').innerText = --cartItem.quantity;
+        cartItemDOM.querySelector('.cart__item__total').innerText = cartItem.quantity * cartItem.price;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        countCartTotal()
+      } else {
+        removeItem(product, cartItemDOM, addToCartButtonDOM);
+      }
+
+      if (cartItem.quantity === 1) {
+        cartItemDOM.querySelector('[data-action="DECREASE_ITEM"]').classList.add('btn--danger');
+      }
+    }
+  });
+}
+
+function removeItem(product, cartItemDOM, addToCartButtonDOM) {
+  // cartItemDOM.classList.add('cart__item--removed');
+  setTimeout(() => cartItemDOM.remove(), 250);
+  cart = cart.filter(cartItem => cartItem.name !== product.name);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  countCartTotal()
+  addToCartButtonDOM.innerText = 'Add To Cart';
+  addToCartButtonDOM.disabled = false;
+
+  if (cart.length < 1) {
+    document.querySelector('.cart-footer').remove();
+  }
+}
+
+function addCartFooter() {
+
+}
+
+function clearCart() {
+  cartDOM.querySelectorAll('.cart__item').forEach(cartItemDOM => {
+    // cartItemDOM.classList.add('cart__item--removed');
+    setTimeout(() => cartItemDOM.remove(), 250);
+  });
+
+  cart = [];
+  localStorage.removeItem('cart');
+  document.querySelector('.cart-footer').remove();
+
+  addToCartButtonsDOM.forEach(addToCartButtonDOM => {
+    addToCartButtonDOM.innerText = 'Add To Cart';
+    addToCartButtonDOM.disabled = false;
+  });
+}
+
+function checkout() {
+alert("Payment method coming soon.")
+
+}
+
+function countCartTotal(){
+  let cartTotal = 0
+  cart.forEach(cartItem => {
+    cartTotal += (cartItem.quantity * cartItem.price)
+
+  })
+  document.querySelector('[data-action="CHECKOUT-TOTAL"]').innerText = `Total: R${cartTotal}.00`
+}
 
 let cartDescription = document.querySelector('.cart-description')
 let searchDisplayHolder = document.querySelector(".search-display-holder")
@@ -133,63 +195,6 @@ let aparrelWrapper = document.querySelector(".aparrel-wrapper")
 let clearSearch = document.querySelector(".clear-search")
 let searchResultHolder = document.querySelector('.search-result-holder')
 let shopWrapper = document.querySelector(".shop-wrapper")
-
-
-//searchbar
-function filter(e){
-    
-    let shopFilter = inventory.filter((inventory) => {
-        console.log(e.target.value);
-        
-       return inventory.name.includes(e.target.value.toLowerCase()) || 
-              inventory.description.includes(e.target.value.toLowerCase()) ||
-              inventory.tag.includes(e.target.value.toLowerCase()) ||
-              inventory.brand.includes(e.target.value.toLowerCase())     
-    })      
-    
-    if(shopFilter){
-        searchResultHolder.style.display = ""
-        searchDisplayHolder.innerHTML=""
-        Object.values(shopFilter).map(function(inventory) {
-            boardWrapper.style.display = 'none'
-            bagsWrapper.style.display = 'none'
-            wetsuitsWrapper.style.display = 'none'
-            accessoriesWrapper.style.display = 'none'
-            aparrelWrapper.style.display = 'none'
-            clearSearch.innerHTML = `<div> ${e.target.value} <button><i class="fas fa-times fa-2x"></i> </button></div>`
-            searchDisplayHolder.innerHTML += 
-            `<div class="item">
-                <div class="item-name"> ${inventory.name} </div>
-                <div> <img src="shop-images/boards/board-1.png"></div>
-                <div class="item-description"> ${inventory.description}</div>
-                <div class="item-price">${inventory.price}</div>
-                <button class="add-cart-boards cart"> add to cart</button>
-            </div>`   
-        })
-    } 
-// showing matched search items
-    if(searchDisplayHolder.children.length === 0) {
-        boardWrapper.style.display = 'none'
-            bagsWrapper.style.display = 'none'
-            wetsuitsWrapper.style.display = 'none'
-            accessoriesWrapper.style.display = 'none'
-            aparrelWrapper.style.display = 'none'
-        searchDisplayHolder.innerHTML += "<div> Sorry, No Items matched your search request</div>"  
-        clearSearch.innerHTML = `<div> ${e.target.value} <button><i class="fas fa-times fa-2x"></i> </button></div>`  
-    }  
-// if the search bar is empty all shop items will be displayed
-   if(e.target.value === "") {
-    shopWrapper.style.display = ''
-    boardWrapper.style.display = ''
-    bagsWrapper.style.display = ''
-    wetsuitsWrapper.style.display = ''
-    accessoriesWrapper.style.display = ''
-    aparrelWrapper.style.display = ''
-    searchResultHolder.style.display = "none"
-   }   
-}
-
-
 
 
 let shopDisplay = document.querySelector('.shop-display')
@@ -249,17 +254,48 @@ function filterShop(e){
     })
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-// --CURRENTLY USING 'DYNAMIC' SEARCH, ADD CODE UNDER FILTER TO ENABLE SEARCH WHEN THE SEARCH BUTTON IS CLICKED--//
-// -- USING 'DYNAMIC' SEARCH AS THE INVENTORY IS SMALL ENOUGH--//
 
-// let searchBtn = document.querySelector('.search-btn')
-// searchBar.addEventListener('click', filter)
+//displaying the cart
+let cartBtn = document.querySelector('#shopping-cart')
 
-//goes in filter function//
-// return inventory.name.includes(searchBar.value.toLowerCase()) || 
-//               inventory.description.includes(searchBar.value.toLowerCase()) ||
-//               inventory.tag.includes(searchBar.value.toLowerCase()) ||
-//               inventory.brand.includes(searchBar.value.toLowerCase()) 
+cartBtn.addEventListener('click', function(){
+  let cartDisplay = document.querySelector(".cart-display")
+  if (cartDisplay.style.display === "none") {
+    cartDisplay.style.display = 'block';
+}
+else {
+  cartDisplay.style.display = "none";
+}
+  
+})
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+
+// making cart display disappear when a location on the page is clicked
+
+let navBar = document.querySelector('.navigation-bar')
+let searchbarHolder = document.querySelector('.searchbar-holder')
+shopDisplay.addEventListener('click', function(){
+  let cartDisplay = document.querySelector(".cart-display")
+  shopDisplay.style.display=''
+  sortBy.style.display = ''
+  cartDisplay.style.display = "none";
+})
+
+sortBy.addEventListener('click', function(){
+  let cartDisplay = document.querySelector(".cart-display")
+  shopDisplay.style.display=''
+  sortBy.style.display = ''
+  cartDisplay.style.display = "none";
+})
+
+navBar.addEventListener('click', function(){
+  let cartDisplay = document.querySelector(".cart-display")
+  shopDisplay.style.display=''
+  sortBy.style.display = ''
+
+  cartDisplay.style.display = "none";
+
+  
+})
+
+
