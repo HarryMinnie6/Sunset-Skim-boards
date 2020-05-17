@@ -11,67 +11,67 @@ hamburgerButton.addEventListener('click' , function (e) {
 
 
 let cart = (JSON.parse(localStorage.getItem('cart')) || []);
-const cartDOM = document.querySelector('.cart');
-const addToCartButtonsDOM = document.querySelectorAll('[data-action="ADD_TO_CART"]');
+const cartDisplay = document.querySelector('.cart');
+const addToCartButton = document.querySelectorAll('[data-action="ADD_TO_CART"]');
 
 if (cart.length > 0) {
   cart.forEach(cartItem => {
     const product = cartItem;
-    insertItemToDOM(product);
-    countCartTotal()
+    displayCartInDOM(product);
+    fullCartTotal()
 
-    addToCartButtonsDOM.forEach(addToCartButtonDOM => {
-      const productDOM = addToCartButtonDOM.parentNode;
+    addToCartButton.forEach(addToCartButtonInDOM => {
+      const itemInDOM = addToCartButtonInDOM.parentNode;
 
-      if (productDOM.querySelector('.product__name').innerText === product.name) {
-        handleActionButtons(addToCartButtonDOM, product);
+      if (itemInDOM.querySelector('.item_name').innerText === product.name) {
+        handleActionButtons(addToCartButtonInDOM, product);
       }
     });
 
   });
 }
 
-addToCartButtonsDOM.forEach(addToCartButtonDOM => {
-  addToCartButtonDOM.addEventListener('click', () => {
-    const productDOM = addToCartButtonDOM.parentNode;
+addToCartButton.forEach(addToCartButtonInDOM => {
+  addToCartButtonInDOM.addEventListener('click', () => {
+    const itemInDOM = addToCartButtonInDOM.parentNode;
     const product = {
-      image: productDOM.querySelector('.product__image').getAttribute('src'),
-      name: productDOM.querySelector('.product__name').innerText,
-      price: productDOM.querySelector('.product__price').innerText,
+      image: itemInDOM.querySelector('.item_image').getAttribute('src'),
+      name: itemInDOM.querySelector('.item_name').innerText,
+      price: itemInDOM.querySelector('.item_price').innerText,
       quantity: 1,
     };
 
     const isInCart = (cart.filter(cartItem => (cartItem.name === product.name)).length > 0);
 
     if (!isInCart) {
-      insertItemToDOM(product);
+      displayCartInDOM(product);
       cart.push(product);
       localStorage.setItem('cart', JSON.stringify(cart));
-      countCartTotal()
-      handleActionButtons(addToCartButtonDOM, product);
+      fullCartTotal()
+      handleActionButtons(addToCartButtonInDOM, product);
     }
   });
 });
 
-function insertItemToDOM(product) {
-  cartDOM.insertAdjacentHTML('beforeend', `
-    <div class="cart__item">
+function displayCartInDOM(product) {
+  cartDisplay.insertAdjacentHTML('beforeend', `
+    <div class="cart_item">
     <div class="image-wrapper ">
-      <img class="cart__item__image" src="${product.image}" alt="${product.name}">
+      <img class="cart_item_image" src="${product.image}" alt="${product.name}">
     </div>
-      <h3 class="cart__item__name">${product.name}</h3>
-      <h3 class="cart__item__price">${product.price}</h3>
+      <h3 class="cart_item_name">${product.name}</h3>
+      <h3 class="cart_item_price">${product.price}</h3>
       <div class='value-btns'> 
       <button class="decrease-btn" data-action="DECREASE_ITEM"><i class="fas fa-caret-left fa-2x"></i></button>
       <div class="quantity-wrapper">
       <h3 class="quantity-header">Quantity</h3>
-      <h3 class="cart__item__quantity">${product.quantity}</h3>
+      <h3 class="cart_item_quantity">${product.quantity}</h3>
       </div>
       <button class="increase-btn" data-action="INCREASE_ITEM"><i class="fas fa-caret-right fa-2x"></i></button>
       </div>
       <div class="item-total-wrapper">
       <h3 class="item-total-header">Item Total</h3>
-      <h3 class="cart__item__total">${product.price * product.quantity}.00</h3>
+      <h3 class="cart_item_total">${product.price * product.quantity}.00</h3>
       </div>
       
       <button class="delete-btn" data-action="REMOVE_ITEM"> X </button>
@@ -79,10 +79,10 @@ function insertItemToDOM(product) {
     );
 
     if (document.querySelector('.cart-footer') === null) {
-      cartDOM.insertAdjacentHTML('afterend', `
+      cartDisplay.insertAdjacentHTML('afterend', `
         <div class="cart-footer">
           <button class="clear-cart-btn" data-action="CLEAR_CART">Clear Cart</button>
-          <div class="cart-total" data-action="CHECKOUT-TOTAL"></div>
+          <div class="cart-total" "></div>
           <button class="payment-btn" data-action="CHECKOUT-BTN">Proceed to payment</button>
         </div>
       `);
@@ -92,42 +92,42 @@ function insertItemToDOM(product) {
     }
 }
 
-function handleActionButtons(addToCartButtonDOM, product) {
-  addToCartButtonDOM.innerText = 'In Cart';
-  addToCartButtonDOM.disabled = true;
+function handleActionButtons(addToCartButtonInDOM, product) {
+  addToCartButtonInDOM.innerText = 'In Cart';
+  addToCartButtonInDOM.disabled = true;
 
-  const cartItemsDOM = cartDOM.querySelectorAll('.cart__item');
+  const cartItemsDOM = cartDisplay.querySelectorAll('.cart_item');
   cartItemsDOM.forEach(cartItemDOM => {
-    if (cartItemDOM.querySelector('.cart__item__name').innerText === product.name) {
-      cartItemDOM.querySelector('[data-action="INCREASE_ITEM"]').addEventListener('click', () => increaseItem(product, cartItemDOM));
-      cartItemDOM.querySelector('[data-action="DECREASE_ITEM"]').addEventListener('click', () => decreaseItem(product, cartItemDOM, addToCartButtonDOM));
-      cartItemDOM.querySelector('[data-action="REMOVE_ITEM"]').addEventListener('click', () => removeItem(product, cartItemDOM, addToCartButtonDOM));
+    if (cartItemDOM.querySelector('.cart_item_name').innerText === product.name) {
+      cartItemDOM.querySelector('[data-action="INCREASE_ITEM"]').addEventListener('click', () => increaseCartItem(product, cartItemDOM));
+      cartItemDOM.querySelector('[data-action="DECREASE_ITEM"]').addEventListener('click', () => decreaseCartItem(product, cartItemDOM, addToCartButtonInDOM));
+      cartItemDOM.querySelector('[data-action="REMOVE_ITEM"]').addEventListener('click', () => removeItem(product, cartItemDOM, addToCartButtonInDOM));
     }
   });
 }
 
-function increaseItem(product, cartItemDOM) {
+function increaseCartItem(product, cartItemDOM) {
   cart.forEach(cartItem => {
     if (cartItem.name === product.name) {
-      cartItemDOM.querySelector('.cart__item__quantity').innerText = ++cartItem.quantity;
-      cartItemDOM.querySelector('.cart__item__total').innerText = cartItem.quantity * cartItem.price;
+      cartItemDOM.querySelector('.cart_item_quantity').innerText = ++cartItem.quantity;
+      cartItemDOM.querySelector('.cart_item_total').innerText = cartItem.quantity * cartItem.price;
       // cartItemDOM.querySelector('[data-action="DECREASE_ITEM"]').classList.remove('btn--danger');
       localStorage.setItem('cart', JSON.stringify(cart));
-      countCartTotal()
+      fullCartTotal()
     }
   });
 }
 
-function decreaseItem(product, cartItemDOM, addToCartButtonDOM) {
+function decreaseCartItem(product, cartItemDOM, addToCartButtonInDOM) {
   cart.forEach(cartItem => {
     if (cartItem.name === product.name) {
       if (cartItem.quantity > 1) {
-        cartItemDOM.querySelector('.cart__item__quantity').innerText = --cartItem.quantity;
-        cartItemDOM.querySelector('.cart__item__total').innerText = cartItem.quantity * cartItem.price;
+        cartItemDOM.querySelector('.cart_item_quantity').innerText = --cartItem.quantity;
+        cartItemDOM.querySelector('.cart_item_total').innerText = cartItem.quantity * cartItem.price;
         localStorage.setItem('cart', JSON.stringify(cart));
-        countCartTotal()
+        fullCartTotal()
       } else {
-        removeItem(product, cartItemDOM, addToCartButtonDOM);
+        removeItem(product, cartItemDOM, addToCartButtonInDOM);
       }
 
       if (cartItem.quantity === 1) {
@@ -137,14 +137,14 @@ function decreaseItem(product, cartItemDOM, addToCartButtonDOM) {
   });
 }
 
-function removeItem(product, cartItemDOM, addToCartButtonDOM) {
-  // cartItemDOM.classList.add('cart__item--removed');
+function removeItem(product, cartItemDOM, addToCartButtonInDOM) {
+  // cartItemDOM.classList.add('cart_item--removed');
   setTimeout(() => cartItemDOM.remove(), 250);
   cart = cart.filter(cartItem => cartItem.name !== product.name);
   localStorage.setItem('cart', JSON.stringify(cart));
-  countCartTotal()
-  addToCartButtonDOM.innerText = 'Add To Cart';
-  addToCartButtonDOM.disabled = false;
+  fullCartTotal()
+  addToCartButtonInDOM.innerText = 'Add To Cart';
+  addToCartButtonInDOM.disabled = false;
 
   if (cart.length < 1) {
     document.querySelector('.cart-footer').remove();
@@ -156,8 +156,8 @@ function addCartFooter() {
 }
 
 function clearCart() {
-  cartDOM.querySelectorAll('.cart__item').forEach(cartItemDOM => {
-    // cartItemDOM.classList.add('cart__item--removed');
+  cartDisplay.querySelectorAll('.cart_item').forEach(cartItemDOM => {
+    // cartItemDOM.classList.add('cart_item--removed');
     setTimeout(() => cartItemDOM.remove(), 250);
   });
 
@@ -165,9 +165,11 @@ function clearCart() {
   localStorage.removeItem('cart');
   document.querySelector('.cart-footer').remove();
 
-  addToCartButtonsDOM.forEach(addToCartButtonDOM => {
-    addToCartButtonDOM.innerText = 'Add To Cart';
-    addToCartButtonDOM.disabled = false;
+  addToCartButton.forEach(addToCartButtonInDOM => {
+    addToCartButtonInDOM.innerText = 'Add To Cart';
+    addToCartButtonInDOM.disabled = false;
+    let cartDisplay = document.querySelector(".cart-display")
+    setTimeout(() => cartDisplay.style.display = "none", 250)
   });
 }
 
@@ -176,13 +178,13 @@ alert("Payment method coming soon.")
 
 }
 
-function countCartTotal(){
+function fullCartTotal(){
   let cartTotal = 0
   cart.forEach(cartItem => {
     cartTotal += (cartItem.quantity * cartItem.price)
 
   })
-  document.querySelector('[data-action="CHECKOUT-TOTAL"]').innerText = `Total: R${cartTotal}.00`
+  document.querySelector('.cart-total').innerText = `Total: R${cartTotal}.00`
 }
 
 let cartDescription = document.querySelector('.cart-description')
